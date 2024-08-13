@@ -1,3 +1,13 @@
+input/
+output/
+log/
+schedules/
+data/
+satsched
+*.exe
+sattools
+*.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
