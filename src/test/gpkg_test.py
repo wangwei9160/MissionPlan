@@ -6,13 +6,10 @@ data_path = "../../data"
 output_path = "../../output"
 
 
-def get_output_gpkg(mission) -> list:
-    # ret = []
-
-    out_gpkg_data = gpd.read_file(output_path + '/' + mission + '.gpkg')
+def get_output_gpkg(mission, path="../../output"):
+    out_gpkg_data = gpd.read_file(path + '/' + mission + '.gpkg')
     # for i in range(len(out_gpkg_data.iloc[0].geometry.bounds)):
     #     print(out_gpkg_data.iloc[0].geometry.bounds[i])
-    # ret.append(out_gpkg_data)
 
     return out_gpkg_data
 
