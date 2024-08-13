@@ -7,28 +7,29 @@ output_path = "../../output"
 
 
 def get_output_gpkg(mission) -> list:
-    ret = []
+    # ret = []
 
     out_gpkg_data = gpd.read_file(output_path + '/' + mission + '.gpkg')
-    for i in range(len(out_gpkg_data.iloc[0].geometry.bounds)):
-        print(out_gpkg_data.iloc[0].geometry.bounds[i])
-    ret.append(out_gpkg_data)
+    # for i in range(len(out_gpkg_data.iloc[0].geometry.bounds)):
+    #     print(out_gpkg_data.iloc[0].geometry.bounds[i])
+    # ret.append(out_gpkg_data)
 
-    return ret
+    return out_gpkg_data
 
 
 def get_mission_id(mission_list) -> list:
-    point_data = gpd.read_file(data_path + '/mission/area.gpkg')
-    area_data = gpd.read_file(data_path + '/mission/point.gpkg')
+    area_data = gpd.read_file(data_path + '/mission/area.gpkg')
+    point_data = gpd.read_file(data_path + '/mission/point.gpkg')
 
     ret = []
-    for i in range(len(point_data)):
-        if point_data.at[i, 'mission_id'] in mission_list:
-            ret.append([point_data.at[i, 'mission_id'], point_data.at[i, 'area'], point_data.at[i, 'geometry']])
-
     for i in range(len(area_data)):
         if area_data.at[i, 'mission_id'] in mission_list:
-            ret.append([area_data.at[i, 'mission_id'], area_data.at[i, 'geometry']])
+            ret.append(
+                [area_data.at[i, 'mission_id'], 'area', area_data.at[i, 'area'], area_data.at[i, 'geometry']])
+
+    for i in range(len(point_data)):
+        if point_data.at[i, 'mission_id'] in mission_list:
+            ret.append([point_data.at[i, 'mission_id'], 'point', point_data.at[i, 'geometry']])
 
     return ret
 
