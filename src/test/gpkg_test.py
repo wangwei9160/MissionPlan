@@ -13,6 +13,11 @@ def get_output_gpkg(mission, path="../../output"):
 
     return out_gpkg_data
 
+def get_satellite_gpkg(satellite, path="../../data/satellite"):
+    satellite_gpkg_data = gpd.read_file(path + '/' + satellite + '.gpkg')
+
+    return satellite_gpkg_data
+
 
 def get_mission_id(mission_list) -> list:
     area_data = gpd.read_file(data_path + '/mission/area.gpkg')

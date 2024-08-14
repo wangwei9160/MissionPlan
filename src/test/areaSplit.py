@@ -81,6 +81,8 @@ def seconds_to_time_str(seconds):
 
 
 def cmd_satellite_tools(satellite, area):
+    shape = area[3]
+    area_name = area[0]
     # print(type(area[3]))
     show_polygon_shape(area[3], area[0])
 
@@ -118,34 +120,55 @@ def cmd_satellite_tools(satellite, area):
     GeoDataFrames = []
     cur_path = os.getcwd()
     os.chdir("../../")
+    flag = False
     for i in satellite:
         m2json['satellite_id'] = i
         # m3json['satellite_id'] = i
+        set_name = "set001"
+        print()
+        if os.path.exists("./output/" + set_name + "_" + area_name + "_" + i + ".gpkg"):
+            flag = True
+            tmp_list = []
+            tmp_time_list = []
+            getGeoDataFrame = gpkg_test.get_output_gpkg(set_name + "_" + area_name + "_" + i, "./output")
+            for idx in range(len(getGeoDataFrame)):
+                GeoDataFrames.append(getGeoDataFrame.iloc[idx].geometry)
+                tmp_time_list.append([getGeoDataFrame.iloc[idx].time, getGeoDataFrame.iloc[idx].roll_angle,
+                                      getGeoDataFrame.iloc[idx].sun_elevation_angle])
+                tmp_list.append(getGeoDataFrame.iloc[idx].geometry)
+            show_polygon_shape_2(area[3], tmp_list, point_list, set_name + "_" + area_name + "_" + i)
+            print(set_name + "_" + area_name + "_" + i + ":")
+            for tmpTime in tmp_time_list:
+                print(tmpTime)
+            continue
+        if flag:
+            continue
         with open("./input/m2001.json", 'w') as f:
             json.dump(m2json, f, indent=1)
         command = "sattools.exe run -i m2001.json -m 2"
         # 执行command命令
         result = subprocess.run(command, shell=True, check=True)
-        getGeoDataFrame = gpkg_test.get_output_gpkg("m2001", "./output")
+        if os.path.exists("./output/m2001.gpkg"):
+            getGeoDataFrame = gpkg_test.get_output_gpkg("m2001", "./output")
+            os.rename("./output/m2001.gpkg", "./output/" + set_name + "_" + area_name + "_" + i + ".gpkg")
+            for idx in range(len(getGeoDataFrame)):
+                GeoDataFrames.append(getGeoDataFrame.iloc[idx].geometry)
         # print(getGeoDataFrame.iloc[0].time)
         # print(type(getGeoDataFrame.iloc[0].time))
-        for idx in range(len(getGeoDataFrame)):
-            GeoDataFrames.append(getGeoDataFrame.iloc[idx].geometry)
-
-            # show_polygon_shape(getGeoDataFrame.iloc[idx].geometry, i + " in " + area[0] + " No" + str(idx + 1))
-            # # m3 test
-            # m3json['start_time'] = seconds_to_time_str(getGeoDataFrame.iloc[idx].time)
-            # m3json['end_time'] = seconds_to_time_str(int(getGeoDataFrame.iloc[idx].time) + 10)
-            # m3json['roll_angle'] = getGeoDataFrame.iloc[idx].roll_angle
-            # print(m3json)
-            # with open("./input/m3001.json", 'w') as f:
-            #     json.dump(m3json, f, indent=1)
-            # command = "sattools.exe run -i m3001.json -m 3"
-            # result = subprocess.run(command, shell=True, check=True)
-            # getGeoDataFrame1 = gpkg_test.get_output_gpkg("m3001", "./output")
-            # show_polygon_shape(getGeoDataFrame1.iloc[0].geometry, "m3")
-            #
-            # show_polygon_shape_2(area[3], [getGeoDataFrame.iloc[idx].geometry, getGeoDataFrame1.iloc[idx].geometry], point_list, "all")
+        # show_polygon_shape(getGeoDataFrame.iloc[idx].geometry, i + " in " + area[0] + " No" + str(idx + 1))
+        # # m3 test
+        # m3json['start_time'] = seconds_to_time_str(getGeoDataFrame.iloc[idx].time)
+        # m3json['end_time'] = seconds_to_time_str(int(getGeoDataFrame.iloc[idx].time) + 10)
+        # m3json['roll_angle'] = getGeoDataFrame.iloc[idx].roll_angle
+        # print(m3json)
+        # with open("./input/m3001.json", 'w') as f:
+        #     json.dump(m3json, f, indent=1)
+        # command = "sattools.exe run -i m3001.json -m 3"
+        # result = subprocess.run(command, shell=True, check=True)
+        # getGeoDataFrame1 = gpkg_test.get_output_gpkg("m3001", "./output")
+        # show_polygon_shape(getGeoDataFrame1.iloc[0].geometry, "m3")
+        #
+        # show_polygon_shape_2(area[3], [getGeoDataFrame.iloc[idx].geometry, getGeoDataFrame1.iloc[idx].geometry], point_list, "all")
 
         # for idx in range(len(getGeoDataFrame)):
         #     show_polygon_shape(getGeoDataFrame.iloc[idx].geometry, i + " in " + area[0] + " No" + str(idx+1))
