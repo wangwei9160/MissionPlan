@@ -24,7 +24,7 @@ if __name__ == '__main__':
     areaSplit.cmd_satellite_tools(json_dict['satellite_id'], area_select)
 
     # 生成m1001.json 通过计算工具计算条带状
-    output_m1001 = gpkg_test.get_output_gpkg("m1001")
+
     # print(output_m1001)
     # for i in output_m1001:
     #     print(i)
