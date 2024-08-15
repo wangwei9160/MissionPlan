@@ -109,7 +109,7 @@ def cmd_satellite_tools(satellite, area):
     area_shape = area[3]
     area_name = area[0]
 
-    # show_polygon_shape(area_shape, area_name)
+    show_polygon_shape(area_shape, area_name)
 
     xx, yy = area_shape.exterior.coords.xy
     x, y = xx.tolist(), yy.tolist()
@@ -122,7 +122,7 @@ def cmd_satellite_tools(satellite, area):
                   for i in range(math.ceil((x_right - x_left) / dx))
                   for j in range(math.ceil((y_top - y_button) / dy))]
 
-    # show_polygon_with_point(area_shape, point_list, area[0] + ' with point')
+    show_polygon_with_point(area_shape, point_list, area[0] + ' with point')
     # 调用计算工具模式2
     m2json = dict()
     m2json['point_longitudes'] = []

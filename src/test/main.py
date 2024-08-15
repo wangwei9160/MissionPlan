@@ -16,12 +16,12 @@ if __name__ == '__main__':
     area_select = []
     for i in mission_list:
         if i[1] == 'area':
-            area_select = i
-            break
+            areaSplit.cmd_satellite_tools(json_dict['satellite_id'], i)
+            # break
 
     # print(area_select)
 
-    areaSplit.cmd_satellite_tools(json_dict['satellite_id'], area_select)
+    # areaSplit.cmd_satellite_tools(json_dict['satellite_id'], area_select)
 
     # 生成m1001.json 通过计算工具计算条带状
 
